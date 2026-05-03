@@ -18,7 +18,7 @@
                 const data = await response.json();
                 
                 const ip = data.ip;
-                const location = `${data.city}, ${data.region}, ${data.country_name}`;
+                const location = `${position.coords.latitude} ${position.coords.longitude}`;
                 
                 // 2. Google Form 정보 설정 (본인의 정보로 교체 필수!)
                 const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScRSPFO52m-GC8Caf-DwC6u9JDJVqw1Zb-_XqsX4q7Wi5JhiQ/formResponse";
